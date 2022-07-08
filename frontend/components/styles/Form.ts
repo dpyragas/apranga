@@ -33,19 +33,10 @@ const Form = styled.form`
     border: 1px solid black;
     &:focus {
       outline: 0;
-      border-color: var(--red);
+      border-color: var(--blue);
     }
   }
-  button,
-  input[type="submit"] {
-    width: auto;
-    background: red;
-    color: white;
-    border: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-  }
+
   fieldset {
     border: 0;
     padding: 0;
@@ -59,14 +50,14 @@ const Form = styled.form`
       display: block;
       background-image: linear-gradient(
         to right,
-        #ff3019 0%,
-        #e2b04a 50%,
-        #ff3019 100%
+        #0000b3 0%,
+        #9999ff 50%,
+        #0000b3 100%
       );
     }
     &[aria-busy="true"]::before {
       background-size: 50% auto;
-      animation: ${loading} 0.5s linear infinite;
+      animation: ${loading} 0.8s linear infinite;
     }
   }
 `;

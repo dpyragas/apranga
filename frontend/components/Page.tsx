@@ -14,6 +14,17 @@ const GlobalStyles = createGlobalStyle`
   font-style:normal;
 
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
   html{
     --blue: #08296b;
     --black: #393939;
@@ -24,6 +35,7 @@ const GlobalStyles = createGlobalStyle`
     --offWhite: #ededed;
     --max-width: 1000px;
     --bs: 0 12px 24px 0 rgba(0,0,0,0.09);
+    font-size: 62.5%;
     box-sizing: border-box;
     
   }

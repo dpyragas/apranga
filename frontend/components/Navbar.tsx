@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
+import NavStyles from "./styles/NavStyles";
 
 const StyledNavbar = styled.div`
   display: flex;
@@ -20,9 +21,9 @@ const Navbar = () => {
       <Link href="/sell">Sell</Link>
       <Link href="/orders">Orders</Link>
       <Link href="/account">Account</Link>
-      <div className="sub-bar">
+      {/* <div className="sub-bar">
         <p>Search</p>
-      </div>
+      </div> */}
     </StyledNavbar>
   );
 };

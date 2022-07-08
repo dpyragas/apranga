@@ -25,11 +25,11 @@ const StyledHeader = styled.header`
 
   border-bottom: 10px solid var(--black, black);
   .bar {
-    display: flex;
+    display: grid;
     align-items: center;
     grid-template-columns: auto 1fr;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
   }
   .sub-bar {
     display: grid;
