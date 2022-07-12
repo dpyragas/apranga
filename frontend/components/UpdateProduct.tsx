@@ -1,62 +1,69 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import styled from "styled-components";
+import { Router } from "next/router";
+import React from "react";
 import useForm from "../hooks/useForm";
-import Form from "./styles/Form";
 import DisplayError from "./ErrorMessage";
-import { ALL_PRODUCTS_QUERY } from "./Products";
-import Router from "next/router";
+import { SINGLE_ITEM_QUERY } from "./SingleProduct";
 import { StyledResetButton, StyledSubmitButton } from "./styles/Buttons";
+import Form from "./styles/Form";
 
-const CREATE_PRODUCT_MUTATION = gql`
-  mutation CREATE_PRODUCT_MUTATION(
-    $name: String!
-    $description: String!
-    $price: Int!
-    $image: Upload
+interface IUpdateProductProps {
+  id: string;
+}
+
+const UPDATE_PRODUCT_MUTATION = gql`
+  mutation UPDATE_PRODUCT_MUTATION(
+    $id: ID!
+    $name: String
+    $description: String
+    $price: Int
   ) {
-    createProduct(
-      data: {
-        name: $name
-        description: $description
-        price: $price
-        status: "AVAILABLE"
-        photo: { create: { image: $image, altText: $name } }
-      }
+    updateProduct(
+      id: $id
+      data: { name: $name, description: $description, price: $price }
     ) {
       id
       name
-      price
       description
+      price
     }
   }
 `;
 
-const CreateProduct = () => {
-  const { inputs, handleChange, resetForm } = useForm();
-  const [createProduct, { data, loading, error }] = useMutation(
-    CREATE_PRODUCT_MUTATION,
-    {
-      variables: inputs,
-      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
-    }
-  );
+const UpdateProduct = ({ id }: IUpdateProductProps) => {
+  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
+    variables: {
+      id,
+    },
+  });
 
+  const [
+    updateProduct,
+    { data: updateData, error: updateError, loading: updateLoading },
+  ] = useMutation(UPDATE_PRODUCT_MUTATION);
+
+  const { inputs, handleChange, resetForm } = useForm(data?.Product);
+
+  if (loading) return <p>Loading...</p>;
   return (
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
-        const res = await createProduct();
+        const res = await updateProduct({
+          variables: {
+            id,
+            name: inputs.name,
+            description: inputs.description,
+            price: inputs.price,
+          },
+        }).catch(console.error);
         resetForm();
-        //Go to products page
-
-        Router.push({
-          pathname: `/product/${res.data.createProduct.id}`,
-        });
+        console.log(res);
       }}
     >
-      <DisplayError error={error} />
-      <fieldset disabled={loading} aria-busy={loading}>
+      <DisplayError error={error || updateError} />
+      <fieldset disabled={updateLoading} aria-busy={updateLoading}>
         <label htmlFor="name">
           Name
           <input
@@ -95,17 +102,11 @@ const CreateProduct = () => {
         </label>
         <label htmlFor="image">
           Image
-          <input
-            type="file"
-            required
-            id="image"
-            name="image"
-            onChange={handleChange}
-          />
+          <input type="file" id="image" name="image" onChange={handleChange} />
         </label>
 
         <StyledSubmitButton style={{ marginRight: "10px" }} type="submit">
-          + Add Product
+          Update Product
         </StyledSubmitButton>
 
         <StyledResetButton type="button" onClick={resetForm}>
@@ -116,4 +117,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
+export default UpdateProduct;
