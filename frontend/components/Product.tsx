@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import formatMoney from "../lib/formatMoney";
+import DeleteProduct from "./DeleteProduct";
 import { IProduct } from "./Products";
 import ItemStyles from "./styles/ItemStyles";
 import PriceTag from "./styles/PriceTag";
@@ -33,6 +34,7 @@ export default function Product({ product }: ProductProps) {
         >
           Edit ✏
         </Link>
+        <DeleteProduct id={product.id}>❌Delete Product</DeleteProduct>
       </div>
     </ItemStyles>
   );

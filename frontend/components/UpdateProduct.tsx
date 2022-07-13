@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { Router } from "next/router";
+import Router from "next/router";
 import React from "react";
 import useForm from "../hooks/useForm";
 import DisplayError from "./ErrorMessage";
@@ -57,9 +57,12 @@ const UpdateProduct = ({ id }: IUpdateProductProps) => {
             description: inputs.description,
             price: inputs.price,
           },
-        }).catch(console.error);
+        });
         resetForm();
-        console.log(res);
+
+        Router.push({
+          pathname: `/product/${res.data.updateProduct.id}`,
+        });
       }}
     >
       <DisplayError error={error || updateError} />
